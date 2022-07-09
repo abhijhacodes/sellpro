@@ -1,6 +1,6 @@
 const API = "http://localhost:5000/api";
 
-export const getAllProducts = () => {
+export const getVerifiedProducts = () => {
   return fetch(`${API}/products`, { method: "GET" })
     .then((response) => {
       return response.json();

@@ -16,6 +16,7 @@ import {
   Wrap,
   WrapItem,
   Image,
+  Text,
 } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
 import { isAuthenticated } from "../../apiCalls/auth";
@@ -82,6 +83,7 @@ const MyProducts = () => {
                     <Th>Category</Th>
                     <Th>Description</Th>
                     <Th isNumeric>Price</Th>
+                    <Th>Status</Th>
                     <Th>Actions</Th>
                   </Tr>
                 </Thead>
@@ -101,6 +103,13 @@ const MyProducts = () => {
                       <Td>{product.category}</Td>
                       <Td>{product.description}</Td>
                       <Td isNumeric>₹{product.price}</Td>
+                      <Td>
+                        {product.isVerified ? (
+                          <Text color="green.200">Approved</Text>
+                        ) : (
+                          <Text color="yellow">Pending</Text>
+                        )}
+                      </Td>
                       <Td>
                         <HStack>
                           <Button

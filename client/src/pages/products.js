@@ -11,13 +11,11 @@ import {
   VStack,
   Select,
   Button,
-  InputGroup,
   Input,
-  InputRightElement,
 } from "@chakra-ui/react";
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import { getAllProducts } from "../apiCalls/products";
+import { getVerifiedProducts } from "../apiCalls/products";
 import {
   BsEmojiHeartEyes,
   BsFillHouseFill,
@@ -63,7 +61,7 @@ const Products = () => {
   };
 
   const loadProducts = () => {
-    getAllProducts().then((data) => {
+    getVerifiedProducts().then((data) => {
       if (data.error) {
         toast.error(data.error);
       } else {
@@ -101,7 +99,7 @@ const Products = () => {
         <title>Products: Buy now</title>
       </Head>
       <main>
-        <Box h="100vh" w="95vw" bgColor="gray.800">
+        <Box minH="100vh" w="95vw" bgColor="gray.800">
           <Tabs
             variant="soft-rounded"
             colorScheme="blue"

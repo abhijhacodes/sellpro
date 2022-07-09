@@ -11,10 +11,10 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { isAuthenticated } from "../../apiCalls/auth";
-import { useState, useEffect } from "react";
 import { signout } from "../../apiCalls/auth";
 import { useRouter } from "next/router";
 import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const NavItems = [
   { text: "Products", href: "/products" },
@@ -95,12 +95,22 @@ const Navbar = () => {
                   currentRoute={currentRoute}
                 />
               ))}
+              {isAuthenticated() && isAuthenticated().user.role === 1 && (
+                <NavLink
+                  text="Admin"
+                  href="/admin"
+                  currentRoute={currentRoute}
+                />
+              )}
             </HStack>
           </HStack>
           <Flex alignItems={"center"}>
             {isAuthenticated() ? (
               <HStack spacing={4}>
-                <Text>{isAuthenticated().user.email}</Text>
+                <Text>
+                  {isAuthenticated().user.role === 1 ? "(Admin)" : ""}{" "}
+                  {isAuthenticated().user.email}
+                </Text>
                 <Button
                   variant={"solid"}
                   colorScheme={"red"}

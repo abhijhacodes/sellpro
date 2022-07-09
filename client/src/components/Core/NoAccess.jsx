@@ -4,7 +4,7 @@ import Link from "next/link";
 
 const NoAccess = () => {
   return (
-    <Center height="100vh" width="100vw">
+    <Center height="100vh" width="95vw">
       <Stack direction={{ base: "column", md: "row" }}>
         <Box textAlign="center" py={10} px={6}>
           <WarningTwoIcon boxSize={"50px"} color={"orange.300"} />

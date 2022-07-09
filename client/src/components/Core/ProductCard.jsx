@@ -14,17 +14,20 @@ import { getProductPhotoURL } from "../../apiCalls/products";
 import toast from "react-hot-toast";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { isAuthenticated } from "../../apiCalls/auth";
+import { addProductToCart, removeProductFromCart } from "../../apiCalls/cart";
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onCartPage = false }) => {
   const { name, description, price, category, userId } = product;
 
   const addToCart = () => {
-    console.log(isAuthenticated());
-    if (!isAuthenticated()) {
-      toast.error("Please sign in to use this feature.");
-    } else {
-      toast.success("Added to cart");
-    }
+    addProductToCart(product, () => {
+      toast.success(`${name} added to cart.`);
+    });
+  };
+
+  const removeFromCart = () => {
+    removeProductFromCart(product._id);
+    toast.success(`${name} removed from cart.`);
   };
 
   return (
@@ -72,7 +75,7 @@ const ProductCard = ({ product }) => {
         </Text>
       </Stack>
       <Button
-        bgColor="green.600"
+        bgColor={onCartPage ? "red.600" : "green.400"}
         color="white"
         width="100%"
         borderRadius="xl"
@@ -80,9 +83,9 @@ const ProductCard = ({ product }) => {
         _hover={{
           transform: "translateY(4px)",
         }}
-        onClick={addToCart}
+        onClick={onCartPage ? removeFromCart : addToCart}
       >
-        Add to cart
+        {onCartPage ? "Remove from cart" : "Add to cart"}
       </Button>
     </Stack>
   );
