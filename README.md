@@ -1,4 +1,6 @@
-##Sellpro : Online selling platform for small businesses and artists
+## Sellpro : Online selling platform for small businesses and artists
+
+<br/>
 
 <b>Full stack javascript project built with</b>
 - [Express js](https://expressjs.com/) as Backend
@@ -7,4 +9,5 @@
 - [Chakra UI](https://chakra-ui.com/) as UI component library
 - And a lot of useful javascript libraries and [npm](https://www.npmjs.com/) packages
 
+<br/>
 Will update the README with complete details of this project / product very soon 🤞
