@@ -7,6 +7,7 @@ const {
   getUser,
   updateUser,
   userPurchaseList,
+  getPublisher,
 } = require("../controllers/user");
 
 router.param("userId", getUserById);
@@ -15,7 +16,7 @@ router.get("/user/:userId", isSignedIn, isAuthenticated, getUser);
 
 router.put("/user/:userId", isSignedIn, isAuthenticated, updateUser);
 
-// router.put("/user/publisher", getPublisher);
+router.get("/user/publisher/:userId", getPublisher);
 
 router.get(
   "/orders/user/:userId",

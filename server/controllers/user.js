@@ -78,3 +78,7 @@ exports.pushOrderInPurchaseList = (req, res, next) => {
     }
   );
 };
+
+exports.getPublisher = (req, res) => {
+  //
+};

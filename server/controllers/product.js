@@ -123,19 +123,14 @@ exports.updateProduct = (req, res) => {
   });
 };
 
-exports.getAllProducts = (req, res) => {
-  let limit = req.query.limit ? parseInt(req.query.limit) : 8;
-  let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
-
+exports.getVerifiedProducts = (req, res) => {
   Product.find({ isVerified: true })
     .select("-photo")
     .populate("category")
-    .sort([[sortBy, "asc"]])
-    .limit(limit)
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({
-          error: "NO product found in database",
+          error: "Error occured while loading products",
         });
       }
       res.json(products);
@@ -155,4 +150,51 @@ exports.getProductsByUser = (req, res) => {
       }
       res.json(products);
     });
+};
+
+exports.getUnverifiedProducts = (req, res) => {
+  Product.find({ isVerified: false })
+    .select("-photo")
+    .populate("category")
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Error occured while loading unverified products",
+        });
+      }
+      res.json(products);
+    });
+};
+
+exports.adminDeleteProduct = (req, res) => {
+  let product = req.product;
+  product.remove((err, prod) => {
+    if (err) {
+      return res.status(400).json({
+        error: `Failed to delete ${prod.name}`,
+      });
+    }
+    res.json({
+      message: `Deleted ${prod.name} successfully.`,
+    });
+  });
+};
+
+exports.adminApproveProduct = (req, res) => {
+  let product = req.product;
+  Product.findByIdAndUpdate(
+    product._id,
+    { isVerified: true },
+    (err, result) => {
+      if (err) {
+        return res.status(400).json({
+          error: `Failed to approve ${product.name}`,
+        });
+      } else {
+        res.json({
+          message: `Approved ${product.name} successfully.`,
+        });
+      }
+    }
+  );
 };

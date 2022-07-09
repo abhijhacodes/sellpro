@@ -8,12 +8,14 @@ const {
   photo,
   deleteProduct,
   updateProduct,
-  getAllProducts,
+  getVerifiedProducts,
+  getUnverifiedProducts,
   getProductsByUser,
+  adminDeleteProduct,
+  adminApproveProduct,
 } = require("../controllers/product");
 const { isSignedIn, isAuthenticated, isAdmin } = require("../controllers/auth");
 const { getUserById } = require("../controllers/user");
-const { check } = require("express-validator");
 
 router.param("userId", getUserById);
 router.param("productId", getProductById);
@@ -42,7 +44,32 @@ router.put(
   updateProduct
 );
 
-router.get("/products", getAllProducts);
+router.get("/products", getVerifiedProducts);
 router.get("/products/:userId", isSignedIn, isAuthenticated, getProductsByUser);
+
+// admin functions
+router.get(
+  "/admin/products/unverified/:userId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  getUnverifiedProducts
+);
+
+router.delete(
+  "/admin/product/:productId/:userId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  adminDeleteProduct
+);
+
+router.put(
+  "/admin/product/:productId/:userId",
+  isSignedIn,
+  isAuthenticated,
+  isAdmin,
+  adminApproveProduct
+);
 
 module.exports = router;

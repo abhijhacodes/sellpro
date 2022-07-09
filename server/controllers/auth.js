@@ -35,38 +35,6 @@ exports.signup = (req, res) => {
   });
 };
 
-// exports.signup = (req, res) => {
-//   const errors = validationResult(req);
-
-//   if (!errors.isEmpty()) {
-//     return res.status(422).json({
-//       error: errors.array()[0].msg,
-//     });
-//   }
-
-//   User.findOne({ email: req.body.email }, (err, user) => {
-//     if (user) {
-//       return res.status(422).json({
-//         error: "This email id is already in use, please try other.",
-//       });
-//     }
-//   });
-
-//   const user = new User(req.body);
-//   user.save((err, user) => {
-//     if (err) {
-//       return res.status(400).json({
-//         err: "Unable to save user in database",
-//       });
-//     }
-//     res.json({
-//       firstname: user.firstname,
-//       email: user.email,
-//       id: user._id,
-//     });
-//   });
-// };
-
 exports.signin = (req, res) => {
   const errors = validationResult(req);
   const { email, password } = req.body;

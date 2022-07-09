@@ -48,7 +48,7 @@ const productSchema = new mongoose.Schema(
     },
     isVerified: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   { timestamps: true }
