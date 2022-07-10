@@ -61,14 +61,18 @@ const Products = () => {
   };
 
   const loadProducts = () => {
-    getVerifiedProducts().then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        setProducts(data);
-        setFilteredProducts(data);
-      }
-    });
+    getVerifiedProducts()
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setProducts(data);
+          setFilteredProducts(data);
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
   };
 
   const searchProducts = () => {

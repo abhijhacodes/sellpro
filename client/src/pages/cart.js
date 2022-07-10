@@ -7,10 +7,11 @@ import Link from "next/link";
 
 const MyCartPage = () => {
   const [cartProducts, setCartProducts] = useState([]);
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     setCartProducts(loadProductsFromCart());
-  }, []);
+  }, [reload]);
 
   return (
     <>
@@ -31,12 +32,14 @@ const MyCartPage = () => {
                     product={product}
                     key={index}
                     onCartPage={true}
+                    setReload={setReload}
+                    reload={reload}
                   />
                 ))}
               </SimpleGrid>
             </Center>
           ) : (
-            <Center h="97vh" w="100vw">
+            <Center h="97vh" w="95vw">
               <VStack>
                 <Heading align="center" mt="28">
                   You haven't added any product to cart yet.

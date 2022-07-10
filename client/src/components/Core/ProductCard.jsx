@@ -13,10 +13,14 @@ import {
 import { getProductPhotoURL } from "../../apiCalls/products";
 import toast from "react-hot-toast";
 import { BsFillCartCheckFill } from "react-icons/bs";
-import { isAuthenticated } from "../../apiCalls/auth";
 import { addProductToCart, removeProductFromCart } from "../../apiCalls/cart";
 
-const ProductCard = ({ product, onCartPage = false }) => {
+const ProductCard = ({
+  product,
+  onCartPage = false,
+  setReload = (f) => f,
+  reload = undefined,
+}) => {
   const { name, description, price, category, userId } = product;
 
   const addToCart = () => {
@@ -28,6 +32,7 @@ const ProductCard = ({ product, onCartPage = false }) => {
   const removeFromCart = () => {
     removeProductFromCart(product._id);
     toast.success(`${name} removed from cart.`);
+    setReload(!reload);
   };
 
   return (

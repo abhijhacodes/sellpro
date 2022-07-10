@@ -34,23 +34,31 @@ const AdminTab = ({ verified }) => {
   const [products, setProducts] = useState([]);
 
   const loadVerifiedProducts = () => {
-    getVerifiedProducts().then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        setProducts(data);
-      }
-    });
+    getVerifiedProducts()
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setProducts(data);
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
   };
 
   const loadUnverifiedProducts = () => {
-    getUnverifiedProducts(token, user._id).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        setProducts(data);
-      }
-    });
+    getUnverifiedProducts(token, user._id)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setProducts(data);
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
   };
 
   useEffect(() => {

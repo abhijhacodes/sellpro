@@ -1,4 +1,5 @@
 const Product = require("../models/product");
+const User = require("../models/user");
 const formidable = require("formidable");
 const { validationResult } = require("express-validator");
 const _ = require("lodash");
@@ -38,7 +39,8 @@ exports.uploadProduct = (req, res) => {
     }
 
     let product = new Product(fields);
-    product.userId = req.params.userId;
+    const publisherId = req.params.userId;
+    product.userId = publisherId;
 
     if (file.photo) {
       if (file.photo.size > 3000000) {
@@ -56,7 +58,9 @@ exports.uploadProduct = (req, res) => {
           error: `Failed to upload ${name}`,
         });
       }
-      res.json(product);
+      res.json({
+        message: `${name} uploaded and sent to admin for approval.`,
+      });
     });
   });
 };

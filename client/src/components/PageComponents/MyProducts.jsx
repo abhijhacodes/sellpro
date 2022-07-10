@@ -37,13 +37,17 @@ const MyProducts = () => {
   const router = useRouter();
 
   const getMyProducts = () => {
-    getProductsByUser(user._id, token).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        setProducts(data);
-      }
-    });
+    getProductsByUser(user._id, token)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setProducts(data);
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
   };
 
   const updateMyProduct = (productId) => {
@@ -51,14 +55,18 @@ const MyProducts = () => {
   };
 
   const deleteMyProduct = (productId) => {
-    deleteProduct(productId, user._id, token).then((data) => {
-      if (data.error) {
-        toast.error(data.error);
-      } else {
-        toast.success("Deleted your product successfully.");
-        getMyProducts();
-      }
-    });
+    deleteProduct(productId, user._id, token)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          toast.success("Deleted your product successfully.");
+          getMyProducts();
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
   };
 
   useEffect(() => {
@@ -152,7 +160,7 @@ const MyProducts = () => {
           </VStack>
         </Box>
       ) : (
-        <Center h="97vh" w="100vw">
+        <Center h="97vh" w="95vw">
           <VStack>
             <Heading align="center" mt="28">
               You haven't uploaded any product to sell yet.

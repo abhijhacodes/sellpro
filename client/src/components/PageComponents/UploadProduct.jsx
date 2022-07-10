@@ -47,22 +47,26 @@ const UploadProduct = () => {
     e.preventDefault();
 
     setValues({ ...values, loading: true });
-    uploadProduct(user._id, token, formData).then((data) => {
-      if (data.error) {
-        setValues({ ...values, loading: false });
-        toast.error(data.error);
-      } else {
-        setValues({
-          ...values,
-          name: "",
-          description: "",
-          price: "",
-          photo: "",
-          loading: false,
-        });
-        toast.success(`${data.name} uploaded successfully`);
-      }
-    });
+    uploadProduct(user._id, token, formData)
+      .then((data) => {
+        if (data.error) {
+          setValues({ ...values, loading: false });
+          toast.error(data.error);
+        } else {
+          setValues({
+            ...values,
+            name: "",
+            description: "",
+            price: "",
+            photo: "",
+            loading: false,
+          });
+          toast.success(data.message);
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
   };
 
   const handleChange = (name) => (event) => {
