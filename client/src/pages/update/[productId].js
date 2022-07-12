@@ -9,13 +9,12 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
   Textarea,
   Select,
   Button,
   VStack,
-  HStack,
 } from "@chakra-ui/react";
+import { GrDocumentUpdate } from "react-icons/gr";
 import { getProduct, updateProduct } from "../../apiCalls/products";
 import { Allcategories } from "../../components/PageComponents/UploadProduct";
 import toast from "react-hot-toast";
@@ -186,6 +185,7 @@ const UpdatePage = () => {
                   focus={{
                     bg: "green.400",
                   }}
+                  rightIcon={<GrDocumentUpdate />}
                 >
                   Update Product
                 </Button>

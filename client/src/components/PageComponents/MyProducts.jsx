@@ -4,7 +4,6 @@ import {
   Button,
   Center,
   Heading,
-  SimpleGrid,
   Table,
   TableContainer,
   Tr,
@@ -13,8 +12,6 @@ import {
   Thead,
   VStack,
   Tbody,
-  Wrap,
-  WrapItem,
   Image,
   Text,
 } from "@chakra-ui/react";
@@ -27,7 +24,7 @@ import {
 } from "../../apiCalls/products";
 import toast from "react-hot-toast";
 import { FaRegEdit } from "react-icons/fa";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiOutlineCloudUpload } from "react-icons/ai";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
@@ -161,14 +158,18 @@ const MyProducts = () => {
         </Box>
       ) : (
         <Center h="97vh" w="95vw">
-          <VStack>
+          <VStack spacing="8">
             <Heading align="center" mt="28">
               You haven't uploaded any product to sell yet.
             </Heading>
             <Link href="/upload" passHref>
-              <Heading as="u" color="green.400" cursor="pointer">
-                Get started now
-              </Heading>
+              <Button
+                colorScheme="teal"
+                size="lg"
+                rightIcon={<AiOutlineCloudUpload />}
+              >
+                Get started now!
+              </Button>
             </Link>
           </VStack>
         </Center>

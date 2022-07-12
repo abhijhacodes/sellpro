@@ -6,16 +6,15 @@ import {
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
   Textarea,
   Select,
   Button,
   VStack,
-  HStack,
 } from "@chakra-ui/react";
 import { isAuthenticated } from "../../apiCalls/auth";
 import { uploadProduct } from "../../apiCalls/products";
 import toast from "react-hot-toast";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
 export const Allcategories = [
   "Tools",
@@ -166,6 +165,7 @@ const UploadProduct = () => {
               focus={{
                 bg: "green.400",
               }}
+              rightIcon={<AiOutlineCloudUpload />}
             >
               Upload Product
             </Button>
