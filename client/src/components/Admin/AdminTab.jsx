@@ -9,6 +9,7 @@ import {
   Image,
   Button,
   HStack,
+  Input,
   VStack,
   Heading,
   Box,
@@ -16,6 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
 import { MdVerifiedUser } from "react-icons/md";
+import { FcSearch } from "react-icons/fc";
+import { MdDelete } from "react-icons/md";
 import {
   adminApproveProduct,
   adminDeleteProduct,
@@ -32,6 +35,27 @@ import { useState, useEffect } from "react";
 const AdminTab = ({ verified }) => {
   const { user, token } = isAuthenticated();
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const searchProducts = () => {
+    filteredProducts = products.filter((product) => {
+      if (
+        searchTerm === "" ||
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
+        return product;
+      }
+    });
+    setFilteredProducts([...filteredProducts]);
+  };
+
+  const clearSearch = () => {
+    setSearchTerm("");
+    setFilteredProducts([...products]);
+  };
 
   const loadVerifiedProducts = () => {
     getVerifiedProducts()
@@ -40,6 +64,7 @@ const AdminTab = ({ verified }) => {
           toast.error(data.error);
         } else {
           setProducts(data);
+          setFilteredProducts(data);
         }
       })
       .catch((err) => {
@@ -54,6 +79,7 @@ const AdminTab = ({ verified }) => {
           toast.error(data.error);
         } else {
           setProducts(data);
+          setFilteredProducts(data);
         }
       })
       .catch((err) => {
@@ -99,7 +125,24 @@ const AdminTab = ({ verified }) => {
   return (
     <>
       {products.length > 0 ? (
-        <Center>
+        <VStack spacing="12">
+          <HStack spacing="2">
+            <Input
+              width="200px"
+              type="text"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+              }}
+              placeholder="Search Products..."
+            />
+            <Button onClick={searchProducts} colorScheme="green">
+              <FcSearch size="20px" />
+            </Button>
+            <Button onClick={clearSearch} colorScheme="red">
+              <MdDelete size="20px" />
+            </Button>
+          </HStack>
           <TableContainer maxWidth="80vw">
             <Table size="sm" variant="striped">
               <Thead>
@@ -114,7 +157,7 @@ const AdminTab = ({ verified }) => {
                 </Tr>
               </Thead>
               <Tbody>
-                {products.map((product, index) => (
+                {filteredProducts.map((product, index) => (
                   <Tr key={index}>
                     <Td isNumeric>{index + 1}</Td>
                     <Td>
@@ -170,7 +213,7 @@ const AdminTab = ({ verified }) => {
               </Tbody>
             </Table>
           </TableContainer>
-        </Center>
+        </VStack>
       ) : (
         <Heading align="center" mt="28">
           There are no {verified ? "Verified" : "Unverified"} products

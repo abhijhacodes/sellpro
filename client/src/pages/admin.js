@@ -34,7 +34,7 @@ const Admin = () => {
             align="center"
             w="100%"
           >
-            <VStack spacing="12">
+            <VStack>
               <TabList>
                 <Tab
                   bg="gray.700"

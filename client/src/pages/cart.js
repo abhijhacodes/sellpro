@@ -1,13 +1,26 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import { loadProductsFromCart } from "../apiCalls/cart";
-import { SimpleGrid, Heading, Center, VStack } from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  Heading,
+  Center,
+  VStack,
+  Box,
+  Stack,
+} from "@chakra-ui/react";
 import ProductCard from "../components/Core/ProductCard";
 import Link from "next/link";
+import Checkout from "../components/Core/Checkout";
 
 const MyCartPage = () => {
   const [cartProducts, setCartProducts] = useState([]);
   const [reload, setReload] = useState(false);
+
+  let totalPrice = 0;
+  cartProducts.forEach((product) => {
+    totalPrice += product.price;
+  });
 
   useEffect(() => {
     setCartProducts(loadProductsFromCart());
@@ -21,23 +34,44 @@ const MyCartPage = () => {
       <main>
         <>
           {cartProducts.length > 0 ? (
-            <Center h="100vh">
-              <SimpleGrid
-                pt={10}
-                spacing="8"
-                columns={{ base: 1, md: 2, lg: 3 }}
+            <Stack
+              minH="100vh"
+              direction={{ base: "column", md: "column", lg: "row" }}
+            >
+              <Center w="60%" mt={cartProducts.length > 2 ? 24 : 12}>
+                <VStack>
+                  <Heading size={{ base: "md", md: "lg" }} color="green.400">
+                    My Cart ({cartProducts.length} products)
+                  </Heading>
+                  <SimpleGrid
+                    pt={10}
+                    pb={12}
+                    spacing="8"
+                    columns={{ base: 1, md: 2, lg: 2 }}
+                  >
+                    {cartProducts.map((product, index) => (
+                      <ProductCard
+                        product={product}
+                        key={index}
+                        onCartPage={true}
+                        setReload={setReload}
+                        reload={reload}
+                      />
+                    ))}
+                  </SimpleGrid>
+                </VStack>
+              </Center>
+              <Box
+                w="40%"
+                pos="sticky"
+                top="0"
+                right="0"
+                h="100vh"
+                bgColor="gray.900"
               >
-                {cartProducts.map((product, index) => (
-                  <ProductCard
-                    product={product}
-                    key={index}
-                    onCartPage={true}
-                    setReload={setReload}
-                    reload={reload}
-                  />
-                ))}
-              </SimpleGrid>
-            </Center>
+                <Checkout amount={totalPrice} />
+              </Box>
+            </Stack>
           ) : (
             <Center h="97vh" w="95vw">
               <VStack>
