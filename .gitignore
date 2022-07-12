@@ -1,6 +1,6 @@
 */node_modules
-# */.env
+server/.env
 */.next
-*/.env*
+client/.env.local
 */build
 */.vercel
