@@ -10,6 +10,7 @@ const authRoute = require("./routes/auth");
 const orderRoute = require("./routes/order");
 const productRoute = require("./routes/product");
 const userRoute = require("./routes/user");
+const checkoutRoute = require("./routes/checkout");
 
 // connecting server to database
 mongoose
@@ -35,6 +36,7 @@ app.use("/api", authRoute);
 app.use("/api", orderRoute);
 app.use("/api", productRoute);
 app.use("/api", userRoute);
+app.use("/api", checkoutRoute);
 
 const port = process.env.BACKEND_SERVER_PORT || 5000;
 app.listen(port, () => {

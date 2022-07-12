@@ -1,4 +1,4 @@
-const API = "http://localhost:5000/api";
+import API from "./index";
 
 export const getVerifiedProducts = () => {
   return fetch(`${API}/products`, { method: "GET" })

@@ -5,10 +5,16 @@ import {
   Flex,
   Heading,
   Text,
-  Link,
+  Link as ChakraLink,
 } from "@chakra-ui/react";
-import { FaArrowRight } from "react-icons/fa";
 import { ImCreditCard } from "react-icons/im";
+import { FiKey } from "react-icons/fi";
+import StripeCheckout from "react-stripe-checkout";
+import { isAuthenticated } from "../../apiCalls/auth";
+import Link from "next/link";
+import toast from "react-hot-toast";
+import API from "../../apiCalls/index";
+import { emptyCart } from "../../apiCalls/cart";
 
 const CheckoutItem = (props) => {
   const { label, value, children } = props;
@@ -22,7 +28,35 @@ const CheckoutItem = (props) => {
   );
 };
 
-const Checkout = ({ amount }) => {
+const Checkout = ({
+  amount,
+  isDisabled,
+  setReload = (f) => f,
+  reload = undefined,
+}) => {
+  const makePayment = async (token) => {
+    const { token: authToken } = isAuthenticated();
+    const body = {
+      token,
+      amount,
+    };
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${authToken}`,
+    };
+    return await fetch(`${API}/checkout`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    })
+      .then(() => {
+        toast.success("Payment successful.");
+        emptyCart();
+        setReload(!reload);
+      })
+      .catch((err) => console.log(err));
+  };
+
   return (
     <Center h="100%">
       <Stack
@@ -38,14 +72,14 @@ const Checkout = ({ amount }) => {
         <Stack spacing="6">
           <CheckoutItem label="Subtotal" value={`₹${amount}`} />
           <CheckoutItem label="Shipping + Tax">
-            <Link href="#" textDecor="underline">
+            <ChakraLink href="#" textDecor="underline">
               Calculate shipping
-            </Link>
+            </ChakraLink>
           </CheckoutItem>
           <CheckoutItem label="Coupon Code">
-            <Link href="#" textDecor="underline">
+            <ChakraLink href="#" textDecor="underline">
               Add coupon code
-            </Link>
+            </ChakraLink>
           </CheckoutItem>
           <Flex justify="space-between">
             <Text fontSize="lg" fontWeight="semibold">
@@ -56,23 +90,61 @@ const Checkout = ({ amount }) => {
             </Text>
           </Flex>
         </Stack>
-        <Button
-          bgColor="green.600"
-          color="white"
-          size="lg"
-          fontSize="md"
-          rightIcon={<ImCreditCard />}
-          boxShadow="2xl"
-          _hover={{
-            transform: "translateY(4px)",
-            backgroundColor: "green.800",
-          }}
-          _active={{
-            backgroundColor: "green.800",
-          }}
-        >
-          Checkout
-        </Button>
+        {isAuthenticated() ? (
+          <StripeCheckout
+            stripeKey={process.env.NEXT_PUBLIC_STRIPE_KEY}
+            token={makePayment}
+            amount={amount * 100}
+            image="https://bit.ly/3RqFW8U"
+            name={`Pay ₹${amount} to SellPro`}
+            description="Happy shopping with SellPro 🛍️"
+            email={isAuthenticated().user.email}
+            shippingAddress
+            billingAddress
+            currency="INR"
+          >
+            <Button
+              bgColor="green.600"
+              color="white"
+              size="lg"
+              fontSize="md"
+              rightIcon={<ImCreditCard />}
+              boxShadow="2xl"
+              _hover={{
+                transform: "translateY(4px)",
+                backgroundColor: "green.800",
+              }}
+              _active={{
+                backgroundColor: "green.800",
+              }}
+              disabled={isDisabled}
+            >
+              Checkout
+            </Button>
+          </StripeCheckout>
+        ) : (
+          <>
+            <Link href="/signin" passHref>
+              <Button
+                bgColor="green.600"
+                color="white"
+                size="lg"
+                fontSize="md"
+                rightIcon={<FiKey />}
+                boxShadow="2xl"
+                _hover={{
+                  transform: "translateY(4px)",
+                  backgroundColor: "green.800",
+                }}
+                _active={{
+                  backgroundColor: "green.800",
+                }}
+              >
+                Sign in
+              </Button>
+            </Link>
+          </>
+        )}
       </Stack>
     </Center>
   );

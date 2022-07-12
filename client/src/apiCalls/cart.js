@@ -37,12 +37,10 @@ export const removeProductFromCart = (productId) => {
   return cart;
 };
 
-export const getCartSize = () => {
+export const emptyCart = () => {
   if (typeof window !== undefined) {
-    if (localStorage.getItem("cart")) {
-      let cart = JSON.parse(localStorage.getItem("cart"));
-      return cart.length;
-    }
+    localStorage.removeItem("cart");
+    let cart = [];
+    localStorage.setItem("cart", JSON.stringify(cart));
   }
-  return 0;
 };

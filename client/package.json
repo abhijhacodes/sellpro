@@ -18,7 +18,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.2.0",
-    "react-icons": "^4.4.0"
+    "react-icons": "^4.4.0",
+    "react-stripe-checkout": "^2.6.3"
   },
   "devDependencies": {
     "eslint": "8.18.0",
