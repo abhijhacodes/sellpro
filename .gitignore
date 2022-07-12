@@ -1,4 +1,6 @@
 */node_modules
 */.env
 */.next
-*/.env.local
+*/.env*.local
+*/build
+*/.vercel
