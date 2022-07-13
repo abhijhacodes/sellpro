@@ -80,5 +80,17 @@ exports.pushOrderInPurchaseList = (req, res, next) => {
 };
 
 exports.getPublisher = (req, res) => {
-  //
+  const userId = req.params.userId;
+  User.findById(userId).exec((err, user) => {
+    if (err || !user) {
+      return res.status(400).json({
+        error: "Error occured when finding publisher.",
+      });
+    }
+    res.status(200).json({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      email: user.email,
+    });
+  });
 };

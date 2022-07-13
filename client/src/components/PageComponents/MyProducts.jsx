@@ -101,12 +101,14 @@ const MyProducts = () => {
                           src={getProductPhotoURL(product._id)}
                           alt={product.name}
                           height="100px"
-                          width="150px"
+                          width="120px"
                         />
                       </Td>
                       <Td>{product.name}</Td>
                       <Td>{product.category}</Td>
-                      <Td>{product.description}</Td>
+                      <Td maxWidth="360px" overflow="hidden">
+                        {product.description}
+                      </Td>
                       <Td isNumeric>₹{product.price}</Td>
                       <Td>
                         {product.isVerified ? (

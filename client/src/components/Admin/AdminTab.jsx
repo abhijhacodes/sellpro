@@ -12,8 +12,7 @@ import {
   Input,
   VStack,
   Heading,
-  Box,
-  Center,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { AiFillDelete } from "react-icons/ai";
 import { MdVerifiedUser } from "react-icons/md";
@@ -24,6 +23,7 @@ import {
   adminDeleteProduct,
   getUnverifiedProducts,
 } from "../../apiCalls/admin";
+import { getProductPublisher } from "../../apiCalls/user";
 import {
   getProductPhotoURL,
   getVerifiedProducts,
@@ -31,12 +31,19 @@ import {
 import toast from "react-hot-toast";
 import { isAuthenticated } from "../../apiCalls/auth";
 import { useState, useEffect } from "react";
+import PublisherModal from "../Core/PublisherModal";
 
 const AdminTab = ({ verified }) => {
   const { user, token } = isAuthenticated();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [publisher, setPublisher] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+  });
 
   const searchProducts = () => {
     filteredProducts = products.filter((product) => {
@@ -80,6 +87,21 @@ const AdminTab = ({ verified }) => {
         } else {
           setProducts(data);
           setFilteredProducts(data);
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
+  };
+
+  const showPublisher = (userId) => {
+    getProductPublisher(userId)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setPublisher(data);
+          onOpen();
         }
       })
       .catch((err) => {
@@ -153,6 +175,7 @@ const AdminTab = ({ verified }) => {
                   <Th>Category</Th>
                   <Th>Description</Th>
                   <Th isNumeric>Price</Th>
+                  <Th>Publisher</Th>
                   <Th>Actions</Th>
                 </Tr>
               </Thead>
@@ -165,13 +188,25 @@ const AdminTab = ({ verified }) => {
                         src={getProductPhotoURL(product._id)}
                         alt={product.name}
                         height="100px"
-                        width="150px"
+                        width="120px"
                       />
                     </Td>
                     <Td>{product.name}</Td>
                     <Td>{product.category}</Td>
-                    <Td>{product.description}</Td>
+                    <Td maxWidth="380px" overflow="hidden">
+                      {product.description}
+                    </Td>
                     <Td isNumeric>₹{product.price}</Td>
+                    <Td>
+                      <Button
+                        onClick={() => showPublisher(product.userId)}
+                        borderRadius="xl"
+                        size="sm"
+                        colorScheme="teal"
+                      >
+                        See Details
+                      </Button>
+                    </Td>
                     <Td>
                       <HStack>
                         <Button
@@ -213,6 +248,11 @@ const AdminTab = ({ verified }) => {
               </Tbody>
             </Table>
           </TableContainer>
+          <PublisherModal
+            isOpen={isOpen}
+            onClose={onClose}
+            publisher={publisher}
+          />
         </VStack>
       ) : (
         <Heading align="center" mt="28">

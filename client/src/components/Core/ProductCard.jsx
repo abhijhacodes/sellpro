@@ -8,12 +8,15 @@ import {
   Tag,
   TagLabel,
   Text,
-  useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { getProductPhotoURL } from "../../apiCalls/products";
 import toast from "react-hot-toast";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { addProductToCart, removeProductFromCart } from "../../apiCalls/cart";
+import PublisherModal from "./PublisherModal";
+import { getProductPublisher } from "../../apiCalls/user";
 
 const ProductCard = ({
   product,
@@ -22,6 +25,12 @@ const ProductCard = ({
   reload = undefined,
 }) => {
   const { name, description, price, category, userId } = product;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [publisher, setPublisher] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+  });
 
   const addToCart = () => {
     addProductToCart(product, () => {
@@ -33,6 +42,21 @@ const ProductCard = ({
     removeProductFromCart(product._id);
     toast.success(`${name} removed from cart.`);
     setReload(!reload);
+  };
+
+  const showPublisher = (userId) => {
+    getProductPublisher(userId)
+      .then((data) => {
+        if (data.error) {
+          toast.error(data.error);
+        } else {
+          setPublisher(data);
+          onOpen();
+        }
+      })
+      .catch((err) => {
+        toast.error("Some error occured, please try again!");
+      });
   };
 
   return (
@@ -69,15 +93,21 @@ const ProductCard = ({
           </Tag>
         </HStack>
         <Text fontWeight="light" color="gray.500">
-          {description}
+          {description.substring(0, 72)}
         </Text>
-        <Text
-          as="span"
-          fontWeight="semibold"
-          color={useColorModeValue("gray.800", "gray.100")}
-        >
-          ₹{price} /-
-        </Text>
+        <HStack justifyContent="space-between">
+          <Text as="span" fontWeight="semibold" color="gray.100">
+            ₹{price} /-
+          </Text>
+          <Button
+            size="xs"
+            onClick={() => showPublisher(userId)}
+            colorScheme="teal"
+            variant="outline"
+          >
+            Publisher
+          </Button>
+        </HStack>
       </Stack>
       <Button
         bgColor={onCartPage ? "red.600" : "green.400"}
@@ -92,6 +122,7 @@ const ProductCard = ({
       >
         {onCartPage ? "Remove from cart" : "Add to cart"}
       </Button>
+      <PublisherModal isOpen={isOpen} onClose={onClose} publisher={publisher} />
     </Stack>
   );
 };

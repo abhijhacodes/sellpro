@@ -99,6 +99,7 @@ const UploadProduct = () => {
                 onChange={handleChange("name")}
                 minLength="3"
                 maxLength="32"
+                placeholder="Product name"
               />
             </FormControl>
             <FormControl mt="4" id="description" isRequired>
@@ -111,6 +112,7 @@ const UploadProduct = () => {
                 onChange={handleChange("description")}
                 minLength="6"
                 maxLength="200"
+                placeholder="Product description, try to keep it short."
               />
             </FormControl>
             <FormControl mt="4" id="photo" isRequired>
@@ -134,6 +136,7 @@ const UploadProduct = () => {
                 onChange={handleChange("price")}
                 minLength="1"
                 maxLength="12"
+                placeholder="Product price in INR"
               />
             </FormControl>
             <Select
