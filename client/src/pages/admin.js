@@ -27,7 +27,7 @@ const Admin = () => {
         <title>Admin Dashboard</title>
       </Head>
       <main>
-        <Box h="100vh" mt="20">
+        <Box minH="100vh" mt="20">
           <Tabs
             variant="soft-rounded"
             colorScheme="blue"
