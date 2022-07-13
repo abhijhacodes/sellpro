@@ -193,7 +193,7 @@ const AdminTab = ({ verified }) => {
                     </Td>
                     <Td>{product.name}</Td>
                     <Td>{product.category}</Td>
-                    <Td maxWidth="380px" overflow="hidden">
+                    <Td maxWidth="350px" overflow="hidden">
                       {product.description}
                     </Td>
                     <Td isNumeric>₹{product.price}</Td>
