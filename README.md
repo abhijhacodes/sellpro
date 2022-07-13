@@ -1,5 +1,7 @@
 ## Sellpro : Online selling platform for small businesses and artists
 
+<img src="https://user-images.githubusercontent.com/77770628/178783253-96c2c9f2-b3a9-4603-888c-88d42413accf.svg" height="500px" width="800px" />
+
 <br/>
 
 <b>Full stack javascript project built with</b>
