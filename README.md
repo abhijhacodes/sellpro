@@ -1,6 +1,10 @@
 ## Sellpro : Online selling platform for small businesses and artists
 
-<img src="https://user-images.githubusercontent.com/77770628/178783253-96c2c9f2-b3a9-4603-888c-88d42413accf.svg" height="500px" width="800px" />
+### [See Project Demo on Youtube](https://youtu.be/yxeopIPJ3cM)
+
+<br/>
+
+<img src="https://user-images.githubusercontent.com/77770628/178783253-96c2c9f2-b3a9-4603-888c-88d42413accf.svg" height="360px" width="560px" />
 
 <br/>
 
